@@ -19,7 +19,7 @@ This project is being developed as a modern ASP.NET Core application with a clea
 
 ## Planning / Project management
 
-- Plane: [app.plane.so/autohub-erp/]
+- [Plane]: (app.plane.so/autohub-erp/)
 
 ## Local development
 
