@@ -1,29 +1,57 @@
-# AutoHub-ERP
+# AutoHub ERP
 
-AutoHub ERP is a web-based enterprise resource planning application built for managing core business operations in a centralized system. The project is currently in development and is designed to evolve into a scalable ERP platform for operational workflows, reporting, and administrative tasks.
+Програмна система автоматизації діяльності автосалону: облік клієнтів і транспортних засобів, продаж автомобілів, оформлення замовлень, гарантійне обслуговування, робота майстерні та формування звітів.
 
-## Project overview
+> Статус: **у розробці**. Навчальний проєкт, що виконується в межах лабораторних робіт з дисципліни «Проектування програмного забезпечення».
 
-This project is being developed as a modern ASP.NET Core application with a clean MVC structure and a simple, maintainable architecture. The goal is to create an ERP solution that can be extended with modules for inventory, users, finance, and business management processes.
+## Основні модулі
 
-## Technologies
+| Модуль | Призначення | Статус |
+|---|---|---|
+| Клієнти | Реєстрація, редагування, пошук клієнтів, історія покупок | Sprint 1 |
+| Автомобілі | Реєстрація та облік автомобілів | Заплановано |
+| Продажі | Оформлення продажу та резервування | Заплановано |
+| Гарантія та майстерня | Гарантійні випадки, обслуговування | Заплановано |
+| Звіти | Звіти про продажі та діяльність | Заплановано |
+| Авторизація | Вхід та ролі користувачів | Заплановано |
 
-- .NET 9
-- ASP.NET Core MVC
-- C#
-- Razor Views
-- HTML / CSS
-- Bootstrap
-- jQuery
-- Visual Studio / VS Code
+Перша версія **v1.0** має включати авторизацію, клієнтів, автомобілі, продажі та резервування.
 
-## Planning / Project management
+## Технології
 
-- [Plane](https://app.plane.so/autohub-erp/)
+- **.NET 10 (LTS)**, C#
+- **ASP.NET Core MVC** та Razor Views
+- HTML / CSS, Bootstrap, jQuery
+- **PostgreSQL** (база даних), Entity Framework Core + Npgsql (планується)
+- **Visual Studio** (IDE)
+- **Git + GitHub** (контроль версій і зберігання артефактів)
+- **Plane** (планування та контроль виконання задач)
+- **Postman** (тестування API)
 
-## Local development
+## Планування та управління проєктом
 
-From the repository root, run the following commands:
+- Plane (робочий простір проєкту): <https://app.plane.so/autohub-erp/>
+- Публічний перегляд задач: <https://sites.plane.so/issues/f9702a23029c4fbc957f024ebb1bb3f3>
+
+**Модель життєвого циклу:** спіральна.
+**Методологія:** Scrum (основа) + Kanban (баги, інциденти, малі зміни).
+**Тривалість спринту:** 2 тижні (Спринт 1: 1–15 жовтня 2026 р.).
+
+Стани задач: `Backlog → To Do → In Progress → Code Review → Testing → Done` (а також `Cancelled`).
+Види задач (мітки): Feature, Bug, Documentation, Research, DevOps, Testing, Design.
+
+## Вимоги до середовища
+
+Перед запуском встановіть:
+
+- [.NET SDK 10](https://dotnet.microsoft.com/download)
+- [PostgreSQL](https://www.postgresql.org/download/) (та, за бажанням, pgAdmin)
+- Visual Studio 2026 (або інша версія, що підтримує обрану версію .NET) із робочим навантаженням «ASP.NET and web development»
+- Git
+
+## Локальний запуск
+
+З кореня репозиторію виконайте:
 
 ```bash
 cd AutoHub
@@ -32,27 +60,47 @@ dotnet build
 dotnet run --project AutoHub.Web/AutoHub.Web.csproj
 ```
 
-After the app starts, open the local ASP.NET Core URL shown in the terminal, typically:
+### Налаштування бази даних
 
-- https://localhost:7012
-- http://localhost:5012
+1. Створіть базу даних PostgreSQL, наприклад `autohub_db`.
+2. Збережіть рядок підключення через User Secrets, щоб пароль не потрапив у репозиторій:
 
-The exact port may vary depending on the project settings.
+```bash
+cd AutoHub
+dotnet user-secrets init --project AutoHub.Web
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=autohub_db;Username=postgres;Password=<ваш-пароль>" --project AutoHub.Web
+```
 
-## Collaborators
+> Не додавайте паролі та інші секрети у `appsettings.json` і не комітьте їх.
 
-- Project Lead: TBD
-- Backend Developer: TBD
-- Frontend Developer: TBD
-- QA / Testing: TBD
-- Designer / UX: TBD
+## Структура репозиторію
 
-## Notes
+```text
+AutoHub-ERP/
+├── AutoHub/
+│   ├── AutoHub.sln
+│   └── AutoHub.Web/
+│       ├── Controllers/    # контролери
+│       ├── Models/         # моделі
+│       ├── Views/          # представлення (Razor)
+│       ├── wwwroot/        # статичні файли
+│       └── Program.cs
+├── .gitignore
+└── README.md
+```
 
-- Project status: In development
-- Current focus: application foundation, structure, and initial ERP-ready architecture
-- Future improvements: authentication, database integration, modules, reporting, and deployment setup
+## Робота з Git
 
-## License
+- `main`: стабільна версія, прямі коміти заборонені.
+- `feature/<номер-задачі>-<короткий-опис>`: нова функціональність, наприклад `feature/13-postgresql-db`.
+- `bugfix/<номер-задачі>-<короткий-опис>`: виправлення помилок.
+- Назва коміту починається з номера задачі в Plane та стисло описує зміну, наприклад: `АГЕ-13: add PostgreSQL connection`.
+- Зміни потрапляють у `main` через Pull Request, який перевіряє інший учасник команди (стан **Code Review**).
 
-This project is currently under active development and may be updated as the architecture and requirements evolve.
+## Команда
+
+| Учасник | Роль |
+|---|---|
+| Татарінов Тимофій | _Product Manager_ |
+
+Студент групи 581-ІПЗ, фаховий коледж «КАІ ТЕХ» НАУ «Київський авіаційний інститут».
