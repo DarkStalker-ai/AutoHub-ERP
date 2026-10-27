@@ -1,0 +1,18 @@
+@model AutoHub.Web.Controllers.CreateUserViewModel
+@{
+    ViewData["Title"] = "Новий користувач";
+}
+<h1>Створення користувача</h1>
+<form asp-action="CreateUser" method="post" class="form-panel" style="max-width:600px">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3"><label asp-for="Username" class="form-label">Логін</label><input asp-for="Username"
+                                                                                           class="form-control" /><span asp-validation-for="Username" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Password" class="form-label">Початковий пароль</label><input asp-for="Password"
+                                                                                                           type="password" class="form-control" /><span asp-validation-for="Password" class="text-danger"></span></div>
+            <div class="mb-3"><label asp-for="Role" class="form-label">Роль</label><select asp-for="Role" class="form-select">
+                <option value="Manager">Менеджер</option>
+                <option value="Admin">Адміністратор</option>
+            </select></div>
+            <button class="btn btn-primary">Створити</button> <a asp-action="Users"
+                                                                 class="btn btn-outline-secondary">Скасувати</a>
+        </form>

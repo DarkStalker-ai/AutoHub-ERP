@@ -1,0 +1,33 @@
+﻿@model AutoHub.Web.Models.CarBrand
+
+@{
+    ViewData["Title"] = "Видалити марку";
+}
+
+<h1>Видалити марку</h1>
+
+<h5>Ви впевнені, що хочете видалити цю марку?</h5>
+
+<hr />
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<dl class="row">
+    <dt class="col-sm-3">Ідентифікатор</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+
+    <dt class="col-sm-3">Назва марки</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit" class="btn btn-danger">
+        Підтвердити видалення
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Скасувати
+    </a>
+</form>

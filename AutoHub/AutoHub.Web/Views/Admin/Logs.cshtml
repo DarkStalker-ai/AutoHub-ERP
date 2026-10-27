@@ -1,0 +1,42 @@
+@model IEnumerable<AutoHub.Web.Models.AuditLog>
+@{
+    ViewData["Title"] = "Журнал подій";
+}
+<h1>Журнал подій</h1>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3"><input class="form-control" name="q" value="@ViewBag.Q"
+                                     placeholder="Користувач, об'єкт, деталі" /></div>
+        <div class="col-md-2"><input class="form-control" name="action" value="@ViewBag.Action" placeholder="Тип дії" />
+        </div>
+        <div class="col-md-2"><input type="date" class="form-control" name="from" value="@ViewBag.From" /></div>
+        <div class="col-md-2"><input type="date" class="form-control" name="to" value="@ViewBag.To" /></div>
+        <div class="col-md-3"><button class="btn btn-primary">Фільтрувати</button> <a asp-action="Logs"
+                                                                                          class="btn btn-outline-secondary">Скинути</a></div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Час UTC</th>
+                        <th>Користувач</th>
+                        <th>Дія</th>
+                        <th>Об'єкт</th>
+                        <th>ID</th>
+                        <th>Деталі</th>
+                        <th>IP</th>
+                    </tr>
+                </thead>
+                <tbody>@foreach(var l in Model){
+                    <tr>
+                        <td>@l.OccurredAtUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@l.Username</td>
+                        <td>@l.Action</td>
+                        <td>@l.EntityName</td>
+                        <td>@l.EntityId</td>
+                        <td>@l.Details</td>
+                        <td>@l.IpAddress</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Вхід до AutoHub ERP";
+}
+<div class="auth-card card shadow-sm mx-auto mt-5" style="max-width:460px">
+    <div class="card-body p-4">
+        <h1 class="h3 mb-2">Вхід до системи</h1>
+        <p class="text-muted">AutoHub ERP · система керування автосалоном</p>
+        <form asp-action="Login" method="post"><input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="mb-3"><label class="form-label" for="username">Логін</label><input class="form-control"
+                                                                                               id="username" name="username" required autocomplete="username" /></div>
+                <div class="mb-3"><label class="form-label" for="password">Пароль</label><input class="form-control"
+                                                                                                    type="password" id="password" name="password" required autocomplete="current-password" /></div>
+                    <button class="btn btn-primary w-100" type="submit">Увійти</button>
+                </form>
+                <p class="small text-muted mt-3 mb-0">Початковий обліковий запис: admin / ChangeMe123! — змініть пароль перед
+                    використанням.</p>
+                </div>
+            </div>

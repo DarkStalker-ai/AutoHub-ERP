@@ -1,0 +1,27 @@
+@model List<AutoHub.Web.Models.SystemSetting>
+@{
+    ViewData["Title"] = "Системні налаштування";
+}
+<h1>Системні параметри</h1>@if(TempData["Message"] != null){
+<div class="alert alert-success">@TempData["Message"]</div>
+}
+<form asp-action="Settings" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ключ</th>
+                <th>Опис</th>
+                <th>Значення</th>
+            </tr>
+        </thead>
+        <tbody>@for(int i=0;i<Model.Count;i++){
+            <tr>
+                <td>@Model[i].Key<input type="hidden" name="settings[@i].Id" value="@Model[i].Id" /><input type="hidden"
+                                                                                                               name="settings[@i].Key" value="@Model[i].Key" /></td>
+                    <td>@Model[i].Description</td>
+                    <td><input class="form-control" name="settings[@i].Value" value="@Model[i].Value" /></td>
+                </tr>
+            }
+        </tbody>
+    </table><button class="btn btn-primary">Зберегти</button>
+</form>

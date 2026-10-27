@@ -1,0 +1,56 @@
+@model IEnumerable<AutoHub.Web.Models.Customer>
+@{
+    ViewData["Title"] = "Клієнти";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1>Клієнти</h1>
+        <p class="text-muted">Керування клієнтами автосалону</p>
+    </div><a asp-action="Create" class="btn btn-primary">+ Додати клієнта</a>
+</div>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-6"><input name="q" value="@ViewBag.Q" class="form-control"
+                                     placeholder="Пошук за ПІБ, телефоном або email" /></div>
+        <div class="col-md-3"><select name="sort" class="form-select">
+            <option value="name" selected="@((ViewBag.Sort == "name") ? "selected" : null)">За ПІБ</option>
+            <option value="email" selected="@((ViewBag.Sort == "email") ? "selected" : null)">За email</option>
+            <option value="created" selected="@((ViewBag.Sort == "created") ? "selected" : null)">Нові спочатку</option>
+        </select></div>
+        <div class="col-md-3"><button class="btn btn-outline-primary">Знайти</button> <a asp-action="Index"
+                                                                                             class="btn btn-outline-secondary">Скинути</a></div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>ПІБ</th>
+                        <th>Телефон</th>
+                        <th>Email</th>
+                        <th>Адреса</th>
+                        <th>Створено</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>@foreach(var c in Model){
+                    <tr>
+                        <td>@c.FullName</td>
+                        <td>@c.PhoneNumber</td>
+                        <td>@c.Email</td>
+                        <td>@c.Address</td>
+                        <td>@c.CreatedAt.ToString("dd.MM.yyyy")</td>
+                        <td><a asp-action="Edit" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary">Змінити</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Delete" asp-route-id="@c.Id"
+                                   class="btn btn-sm btn-outline-danger">Видалити</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">За заданими умовами клієнтів не знайдено.</div>
+    }

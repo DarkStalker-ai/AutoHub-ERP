@@ -1,0 +1,29 @@
+﻿
+@model AutoHub.Web.Models.CarBrand
+
+@{
+    ViewData["Title"] = "Деталі марки";
+}
+
+<h1>Деталі марки</h1>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Ідентифікатор</dt>
+    <dd class="col-sm-9">@Model.Id</dd>
+
+    <dt class="col-sm-3">Назва марки</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+</dl>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id"
+       class="btn btn-primary">
+        Редагувати
+    </a>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        До списку
+    </a>
+</div>

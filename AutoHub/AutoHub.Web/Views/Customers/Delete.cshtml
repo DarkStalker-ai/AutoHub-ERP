@@ -1,0 +1,10 @@
+@model AutoHub.Web.Models.Customer
+@{
+    ViewData["Title"] = "Видалення клієнта";
+}
+<h1>Видалити клієнта?</h1>
+<div class="alert alert-warning">Ви збираєтеся видалити запис <strong>@Model.FullName</strong>. Дію не можна скасувати.
+</div>
+<form asp-action="Delete" method="post"><input type="hidden" name="id" value="@Model.Id" /><button
+    class="btn btn-danger">Видалити</button> <a asp-action="Index" class="btn btn-outline-secondary">Скасувати</a>
+</form>

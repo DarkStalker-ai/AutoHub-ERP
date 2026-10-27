@@ -1,0 +1,91 @@
+@model IEnumerable<AutoHub.Web.Models.Car>
+
+@{
+    ViewData["Title"] = "Cars";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Cars</h1>
+        <p class="text-muted">AutoHub ERP Car Catalog</p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">
+        + Add Car
+    </a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3"><input name="q" value="@ViewBag.Q" class="form-control"
+                                     placeholder="Пошук за моделлю, маркою, кольором" /></div>
+        <div class="col-md-2"><select name="status" class="form-select">
+            <option value="">Усі статуси</option>
+            <option value="Available" selected="@((ViewBag.Status == "Available") ? "selected" : null)">У наявності
+            </option>
+            <option value="Reserved" selected="@((ViewBag.Status == "Reserved") ? "selected" : null)">Зарезервовано
+            </option>
+            <option value="Sold" selected="@((ViewBag.Status == "Sold") ? "selected" : null)">Продано</option>
+            <option value="Service" selected="@((ViewBag.Status == "Service") ? "selected" : null)">На обслуговуванні
+            </option>
+        </select></div>
+        <div class="col-md-2"><select name="brandId" asp-items="ViewBag.Brands" class="form-select">
+            <option value="">Усі марки</option>
+        </select></div>
+        <div class="col-md-2"><select name="sort" class="form-select">
+            <option value="model" selected="@((ViewBag.Sort == "model") ? "selected" : null)">За моделлю</option>
+            <option value="brand" selected="@((ViewBag.Sort == "brand") ? "selected" : null)">За маркою</option>
+            <option value="year" selected="@((ViewBag.Sort == "year") ? "selected" : null)">За роком</option>
+            <option value="price" selected="@((ViewBag.Sort == "price") ? "selected" : null)">За ціною</option>
+        </select></div>
+        <div class="col-md-3"><button class="btn btn-outline-primary">Застосувати</button> <a asp-action="Index"
+                                                                                                  class="btn btn-outline-secondary">Скинути</a></div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Model</th>
+                        <th>Brand</th>
+                        <th>Year</th>
+                        <th>Color</th>
+                        <th>Status</th>
+                        <th>Price, UAH</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var car in Model)
+                    {
+                        <tr>
+                            <td>@car.Model</td>
+                            <td>@car.CarBrand?.Name</td>
+                            <td>@car.ProductionYear</td>
+                            <td>@(car.Color ?? "—")</td>
+                            <td>@car.Status</td>
+                            <td>@car.Price.ToString("N2")</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-sm btn-outline-secondary">
+                                    Details
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-sm btn-outline-primary">
+                                    Edit
+                                </a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info">
+                There are no cars yet. Add the first record.
+            </div>
+        }

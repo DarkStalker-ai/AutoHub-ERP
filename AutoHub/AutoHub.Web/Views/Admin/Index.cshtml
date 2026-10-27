@@ -1,0 +1,34 @@
+@model AutoHub.Web.Controllers.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Адміністрування";
+}
+<h1 class="mb-4">Адміністративна підсистема</h1>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-muted">Користувачі</div>
+                <div class="display-6">@Model.Users</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-muted">Записи журналу</div>
+                <div class="display-6">@Model.Logs</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-muted">Системні параметри</div>
+                <div class="display-6">@Model.Settings</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-wrap gap-2"><a class="btn btn-primary" asp-action="Users">Користувачі</a><a
+    class="btn btn-outline-primary" asp-action="Logs">Журнал подій</a><a class="btn btn-outline-primary"
+                                                                         asp-action="Settings">Налаштування системи</a></div>

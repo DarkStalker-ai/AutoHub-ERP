@@ -1,0 +1,44 @@
+﻿@model AutoHub.Web.Models.Car
+
+@{
+    ViewData["Title"] = "Information";
+}
+
+<h1>Information about the car</h1>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h4>@Model.Model</h4>
+        <hr />
+
+        <dl class="row">
+            <dt class="col-sm-3">ID</dt>
+            <dd class="col-sm-9">@Model.Id</dd>
+
+            <dt class="col-sm-3">Brand</dt>
+            <dd class="col-sm-9">@Model.CarBrandId</dd>
+
+            <dt class="col-sm-3">Production Year</dt>
+            <dd class="col-sm-9">@Model.ProductionYear</dd>
+
+            <dt class="col-sm-3">Color</dt>
+            <dd class="col-sm-9">@Model.Color</dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">@Model.Status</dd>
+
+            <dt class="col-sm-3">Price</dt>
+            <dd class="col-sm-9">
+                @Model.Price.ToString("N2") UAH
+            </dd>
+        </dl>
+
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+            Редагувати
+        </a>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Назад до списку
+        </a>
+    </div>
+</div>
