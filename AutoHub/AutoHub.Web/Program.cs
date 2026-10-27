@@ -4,6 +4,20 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
+Console.WriteLine($"Content root: {builder.Environment.ContentRootPath}");
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (connectionString is not null)
+{
+    var safeConnectionString = System.Text.RegularExpressions.Regex.Replace(
+        connectionString,
+        @"(?i)(Password\s*=\s*)[^;]*",
+        "$1***");
+
+    Console.WriteLine($"Actual connection string: [{safeConnectionString}]");
+}
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));

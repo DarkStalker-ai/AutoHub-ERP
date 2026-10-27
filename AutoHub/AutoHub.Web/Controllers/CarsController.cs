@@ -63,7 +63,7 @@ public class CarsController : Controller
     // POST: /Cars/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Car car)
+    public async Task<IActionResult> Create([Bind("Model,CarBrandId,ProductionYear,Color,Status,Price")] Car car)
     {
         if (!await _context.CarBrands
                 .AnyAsync(b => b.Id == car.CarBrandId))
@@ -87,40 +87,23 @@ public class CarsController : Controller
     }
 
     // GET: /Cars/Edit/1
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Model,CarBrandId,ProductionYear,Color,Status,Price")] Car input)
     {
-        if (id == null)
-            return NotFound();
-
-        var car = await _context.Cars.FindAsync(id);
-
-        if (car == null)
-            return NotFound();
-
-        await LoadBrandsAsync(car.CarBrandId);
-        return View(car);
-    }
-
-    // POST: /Cars/Edit/1
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, Car car)
-    {
-        if (id != car.Id)
+        if (id != input.Id)
             return NotFound();
 
         if (!await _context.CarBrands
-                .AnyAsync(b => b.Id == car.CarBrandId))
+                .AnyAsync(b => b.Id == input.CarBrandId))
         {
             ModelState.AddModelError(
-                nameof(car.CarBrandId),
-                "Choose available brand.");
+                nameof(input.CarBrandId),
+                "Оберіть наявну марку.");
         }
 
         if (!ModelState.IsValid)
         {
-            await LoadBrandsAsync(car.CarBrandId);
-            return View(car);
+            await LoadBrandsAsync(input.CarBrandId);
+            return View(input);
         }
 
         var existingCar = await _context.Cars.FindAsync(id);
@@ -128,15 +111,21 @@ public class CarsController : Controller
         if (existingCar == null)
             return NotFound();
 
-        existingCar.Model = car.Model;
-        existingCar.CarBrandId = car.CarBrandId;
-        existingCar.ProductionYear = car.ProductionYear;
-        existingCar.Color = car.Color;
-        existingCar.Status = car.Status;
-        existingCar.Price = car.Price;
+        // Змінюємо лише дозволені властивості
+        existingCar.Model = input.Model;
+        existingCar.CarBrandId = input.CarBrandId;
+        existingCar.ProductionYear = input.ProductionYear;
+        existingCar.Color = input.Color;
+        existingCar.Status = input.Status;
+        existingCar.Price = input.Price;
 
         await _context.SaveChangesAsync();
-        await _audit.WriteAsync("Update", "Car", id.ToString(), $"Змінено автомобіль {existingCar.Model}");
+
+        await _audit.WriteAsync(
+            "Update",
+            "Car",
+            id.ToString(),
+            $"Змінено автомобіль {existingCar.Model}");
 
         return RedirectToAction(nameof(Index));
     }

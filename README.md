@@ -6,24 +6,24 @@
 
 ## Основні модулі
 
-| Модуль | Призначення | Статус |
-|---|---|---|
-| Клієнти | Реєстрація, редагування, пошук клієнтів, історія покупок | Sprint 1 |
-| Автомобілі | Реєстрація та облік автомобілів | Заплановано |
-| Продажі | Оформлення продажу та резервування | Заплановано |
-| Гарантія та майстерня | Гарантійні випадки, обслуговування | Заплановано |
-| Звіти | Звіти про продажі та діяльність | Заплановано |
-| Авторизація | Вхід та ролі користувачів | Заплановано |
+| Модуль                         | Призначення                                            | Статус                      |
+| ------------------------------ | ------------------------------------------------------ | --------------------------- |
+| Клієнти                        | Реєстрація, редагування, пошук клієнтів                | Реалізовано                 |
+| Автомобілі та марки            | Реєстрація, облік і керування автомобілями та марками  | Реалізовано                 |
+| Продажі                        | Оформлення продажу та резервування                     | Заплановано                 |
+| Гарантія та майстерня          | Гарантійні випадки, обслуговування                     | Заплановано                 |
+| Звіти                          | Звіти про діяльність системи                           | Реалізовано (базова версія) |
+| Авторизація та адміністрування | Вхід, ролі користувачів, керування обліковими записами | Реалізовано (базова версія) |
 
-Перша версія **v1.0** має включати авторизацію, клієнтів, автомобілі, продажі та резервування.
+Перша версія **v1.0** має включати авторизацію, клієнтів, автомобілі, продажі та резервування. Продажі й резервування ще заплановані.
 
 ## Технології
 
-- **.NET 10 (LTS)**, C#
+- **.NET 9**, C#
 - **ASP.NET Core MVC** та Razor Views
 - HTML / CSS, Bootstrap, jQuery
-- **PostgreSQL** (база даних), Entity Framework Core + Npgsql (планується)
-- **Visual Studio** (IDE)
+- **PostgreSQL**, Entity Framework Core та Npgsql (підключення й міграції налаштовані)
+- **Visual Studio / VS Code** (IDE)
 - **Git + GitHub** (контроль версій і зберігання артефактів)
 - **Plane** (планування та контроль виконання задач)
 - **Postman** (тестування API)
@@ -44,9 +44,9 @@
 
 Перед запуском встановіть:
 
-- [.NET SDK 10](https://dotnet.microsoft.com/download)
+- [.NET SDK 9](https://dotnet.microsoft.com/download)
 - [PostgreSQL](https://www.postgresql.org/download/) (та, за бажанням, pgAdmin)
-- Visual Studio 2026 (або інша версія, що підтримує обрану версію .NET) із робочим навантаженням «ASP.NET and web development»
+- Visual Studio із робочим навантаженням «ASP.NET and web development» або VS Code
 - Git
 
 ## Локальний запуск
@@ -62,16 +62,18 @@ dotnet run --project AutoHub.Web/AutoHub.Web.csproj
 
 ### Налаштування бази даних
 
-1. Створіть базу даних PostgreSQL, наприклад `autohub_db`.
-2. Збережіть рядок підключення через User Secrets, щоб пароль не потрапив у репозиторій:
+1. Створіть базу даних PostgreSQL, наприклад `autohub_erp`.
+2. Збережіть рядок підключення і пароль початкового адміністратора через User Secrets, щоб секрети не потрапили до репозиторію:
 
 ```bash
-cd AutoHub
-dotnet user-secrets init --project AutoHub.Web
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=autohub_db;Username=postgres;Password=<ваш-пароль>" --project AutoHub.Web
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=autohub_erp;Username=postgres;Password=<ваш-пароль>" --project AutoHub/AutoHub.Web/AutoHub.Web.csproj
+dotnet user-secrets set "BootstrapAdmin:Username" "admin" --project AutoHub/AutoHub.Web/AutoHub.Web.csproj
+dotnet user-secrets set "BootstrapAdmin:Password" "<надійний-пароль>" --project AutoHub/AutoHub.Web/AutoHub.Web.csproj
 ```
 
-> Не додавайте паролі та інші секрети у `appsettings.json` і не комітьте їх.
+Під час запуску в середовищі Development застосунок автоматично застосовує EF Core міграції та створює початкові записи, якщо параметр `Database:InitializeOnStartup` увімкнено.
+
+> Не додавайте паролі та інші секрети до файлів конфігурації чи Git. Зберігайте їх у User Secrets або змінних середовища.
 
 ## Структура репозиторію
 
@@ -99,8 +101,8 @@ AutoHub-ERP/
 
 ## Команда
 
-| Учасник | Роль |
-|---|---|
+| Учасник           | Роль              |
+| ----------------- | ----------------- |
 | Татарінов Тимофій | _Product Manager_ |
 
 Студент групи 581-ІПЗ, фаховий коледж «КАІ ТЕХ» НАУ «Київський авіаційний інститут».

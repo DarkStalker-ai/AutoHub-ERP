@@ -28,6 +28,26 @@ public static class DbInitializer
             if (!await db.SystemSettings.AnyAsync(s => s.Key == setting.Key)) db.SystemSettings.Add(setting);
         if (!await db.CarBrands.AnyAsync())
             db.CarBrands.AddRange(new CarBrand { Name = "Toyota" }, new CarBrand { Name = "Volkswagen" }, new CarBrand { Name = "BMW" });
+        var managerUsername = config["BootstrapManager:Username"];
+        var managerPassword = config["BootstrapManager:Password"];
+
+        if (!string.IsNullOrWhiteSpace(managerUsername) &&
+            !string.IsNullOrWhiteSpace(managerPassword) &&
+            !await db.AppUsers.AnyAsync(u => u.Username == managerUsername))
+        {
+            var manager = new AppUser
+            {
+                Username = managerUsername,
+                Role = "Manager",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            manager.PasswordHash = new PasswordHasher<AppUser>()
+                .HashPassword(manager, managerPassword);
+
+            db.AppUsers.Add(manager);
+        }
         await db.SaveChangesAsync();
     }
 }

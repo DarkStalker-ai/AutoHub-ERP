@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AutoHub.Web.Controllers
 {
     [Authorize]
-public class CarBrandsController : Controller
+    public class CarBrandsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly AuditService _audit;
@@ -53,26 +53,26 @@ public class CarBrandsController : Controller
         // POST: CarBrands/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CarBrand brand)
+        public async Task<IActionResult> Create([Bind("Name")] CarBrand carBrand)
         {
             if (await _context.CarBrands
-                .AnyAsync(b => b.Name == brand.Name))
+                .AnyAsync(b => b.Name == carBrand.Name))
             {
                 ModelState.AddModelError(
-                    nameof(brand.Name),
+                    nameof(carBrand.Name),
                     "A brand with the same name already exists.");
             }
 
             if (ModelState.IsValid)
             {
-                _context.CarBrands.Add(brand);
+                _context.CarBrands.Add(carBrand);
                 await _context.SaveChangesAsync();
-                await _audit.WriteAsync("Create", "CarBrand", brand.Id.ToString(), $"Додано марку {brand.Name}");
+                await _audit.WriteAsync("Create", "CarBrand", carBrand.Id.ToString(), $"Додано марку {carBrand.Name}");
 
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(brand);
+            return View(carBrand);
         }
 
         // GET: CarBrands/Edit/1
@@ -92,29 +92,40 @@ public class CarBrandsController : Controller
         // POST: CarBrands/Edit/1
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, CarBrand brand)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] CarBrand input)
         {
-            if (id != brand.Id)
+            if (id != input.Id)
                 return NotFound();
 
+            if (!ModelState.IsValid)
+                return View(input);
+
+            var existingBrand = await _context.CarBrands.FindAsync(id);
+
+            if (existingBrand == null)
+                return NotFound();
+
+            existingBrand.Name = input.Name;
+
+            
             if (await _context.CarBrands.AnyAsync(
-                b => b.Name == brand.Name && b.Id != brand.Id))
+                b => b.Name == input.Name && b.Id != input.Id))
             {
                 ModelState.AddModelError(
-                    nameof(brand.Name),
+                    nameof(input.Name),
                     "A brand with the same name already exists.");
             }
 
             if (ModelState.IsValid)
             {
-                _context.Update(brand);
+                _context.Update(input);
                 await _context.SaveChangesAsync();
-                await _audit.WriteAsync("Update", "CarBrand", brand.Id.ToString(), $"Змінено марку {brand.Name}");
+                await _audit.WriteAsync("Update", "CarBrand", input.Id.ToString(), $"Змінено марку {input.Name}");
 
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(brand);
+            return View(input);
         }
 
         // GET: CarBrands/Delete/1
