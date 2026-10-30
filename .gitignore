@@ -427,3 +427,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Database backups
+database_backups/
+
+# Published application archive
+publish.zip

@@ -5,8 +5,6 @@ VisualStudioVersion = 17.14.37411.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.Web", "AutoHub.Web\AutoHub.Web.csproj", "{0CF7B485-4354-4846-A109-73DC5F863C3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoHub.Tests", "AutoHub.Tests\AutoHub.Tests.csproj", "{6EF08F49-4A7F-4F77-AC9F-74CDC1371173}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
